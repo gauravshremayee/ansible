@@ -555,6 +555,13 @@ class InventoryManager(object):
         if not matching_groups or pattern[0] == '~' or any(special in pattern for special in ('.', '?', '*', '[')):
             # pattern might match host
             matching_hosts = self._match_list(self._inventory.hosts, pattern)
+            print ("Self Inventory Hosts")
+            print (self._inventory.hosts)
+            print("Pattern")
+            print(pattern)
+
+            print("Matching hosts")
+            print(matching_hosts)
             if matching_hosts:
                 for hostname in matching_hosts:
                     results.append(self._inventory.hosts[hostname])
@@ -563,18 +570,25 @@ class InventoryManager(object):
             # get_host autocreates implicit when needed
             implicit = self._inventory.get_host(pattern)
             if implicit:
+                print ("Appending")
                 results.append(implicit)
 
+         
+         
+        print("Matching Groups1")
+        print(matching_groups)
         # Display warning if specified host pattern did not match any groups or hosts
         if not results and not matching_groups and pattern != 'all':
-            msg = "Could not match supplied host pattern, ignoring: %s" % pattern
+            msg = "Couldn't match supplied host pattern, ignoring: %s" % pattern
             display.debug(msg)
             if C.HOST_PATTERN_MISMATCH == 'warning':
                 display.warning(msg)
             elif C.HOST_PATTERN_MISMATCH == 'error':
                 raise AnsibleError(msg)
             # no need to write 'ignore' state
-
+        print("Returning")
+        print(results)
+        results="192.168.1.108"
         return results
 
     def list_hosts(self, pattern="all"):
