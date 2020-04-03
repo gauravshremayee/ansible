@@ -588,7 +588,10 @@ class InventoryManager(object):
             # no need to write 'ignore' state
         print("Returning")
         print(results)
-        results="192.168.1.108"
+        #results='192.168.1.108'
+        #results="localhost"
+
+        results.append("localhost")
         return results
 
     def list_hosts(self, pattern="all"):
