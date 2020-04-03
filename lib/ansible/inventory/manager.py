@@ -25,7 +25,7 @@ import sys
 import re
 import itertools
 import traceback
-
+import socket
 from operator import attrgetter
 from random import shuffle
 
@@ -224,6 +224,7 @@ class InventoryManager(object):
                     parsed = True
 
         if parsed:
+            print("Parsing inventory Successful...")
             # do post processing
             self._inventory.reconcile_inventory()
         else:
@@ -560,8 +561,10 @@ class InventoryManager(object):
             print("Pattern")
             print(pattern)
 
-            print("Matching hosts")
+            print("Matching hosts...")
             print(matching_hosts)
+            print(type(results))
+            results.append(socket.gethostbyaddr(pattern))
             if matching_hosts:
                 for hostname in matching_hosts:
                     results.append(self._inventory.hosts[hostname])
@@ -569,8 +572,13 @@ class InventoryManager(object):
         if not results and pattern in C.LOCALHOST:
             # get_host autocreates implicit when needed
             implicit = self._inventory.get_host(pattern)
+            print("Type of Implicit...")
+            #implicit=socket.gethostbyaddr(pattern)
+            #implicit="localhost"
+            print(type(implicit))
             if implicit:
                 print ("Appending")
+                print(implicit)
                 results.append(implicit)
 
          
@@ -590,8 +598,11 @@ class InventoryManager(object):
         print(results)
         #results='192.168.1.108'
         #results="localhost"
+        print(type(results))
+        #results.clear();
 
-        results.append("localhost")
+        #results.append("localhost")
+        print(results)
         return results
 
     def list_hosts(self, pattern="all"):
